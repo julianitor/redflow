@@ -45,8 +45,8 @@ function setPage(componentName) {
 
 var routes = {
   all: {path: '/', fn: setPage("all")},
-  active: {path: 'active', fn: setPage("active")},
-  completed: {path: 'completed', fn: setPage("completed")}
+  active: {path: '/active', fn: setPage("active")},
+  completed: {path: '/completed', fn: setPage("completed")}
 };
 
 function start() {
