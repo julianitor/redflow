@@ -4,7 +4,7 @@ var React = require("react"),
     Dispatcher = require("../lib/dispatcher"),
     Actions = require("../config/actions"),
     layouts = {
-      main: require("./layouts/main"),
+      main: require("./layouts/main.jsx"),
     };
 
 var beginUpdate;

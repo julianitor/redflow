@@ -1,6 +1,6 @@
 "use strict";
 var React = require("react"),
-    TodoCreate = require("./todocreate");
+    TodoCreate = require("./todocreate.jsx");
 
 module.exports = React.createClass({
   propTypes: {
