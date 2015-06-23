@@ -38,15 +38,9 @@ function setPage(componentName) {
     if (anchor) {
       window.location.hash = anchor;
     } else {
-      $(document.body).removeClass('menu-is-shown');
       setTimeout(_.partial(emit, 'ROUTING:SETPAGE', componentName), 0);
     }
   };
-}
-
-function resetForm() {
-  emit('APPLICATION:RESET:FORM');
-  emit('FUNNEL:CANCEL');
 }
 
 var routes = {
