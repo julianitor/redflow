@@ -1,8 +1,8 @@
 "use strict";
 var React = require("react"),
-    Header = require("../header"),
-    TodoList = require("../todolist"),
-    Footer = require("../footer");
+    Header = require("../header.jsx"),
+    TodoList = require("../todolist.jsx"),
+    Footer = require("../footer.jsx");
 
 var MainLayout = React.createClass({
   render: function() {

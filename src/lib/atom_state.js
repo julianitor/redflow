@@ -1,4 +1,4 @@
-var debounce = require('./utils').debounce,
+var fn = require('fn.js'),
     mori = require('mori');
 
 // atom state
@@ -9,52 +9,65 @@ var atom;
 
 // some utils
 
-var slice = [].slice;
+var slice = Array.prototype.slice;
+var getArgs = function() { return slice.call(arguments); };
 
 function wrap(op, args) {
+  // slice.call so I can pass 'arguments' directly
+  args = slice.call(args);
   return mori[op].apply(mori, [atom.get()].concat(args));
 }
 
 // simple publisher
 
-var notifySwap = debounce(function(state) {
+var notifySwap = function(state) {
   for (var i=listeners.length; i--;) listeners[i](state);
-}, 10);
+};
+
+// TODO: Think about this: notifySwap being async causes trouble!
+// for ex. if you want to separate command from query, so tue
+// queries from the view can be free from side effects, the .emit()
+// should finish before the query. Maybe this issue can be solve
+// with a promise and promise-propagation betweeen debounced calls.
+// FOR NOW: it remains sync, non-debounced.
+
+// notifySwap = fn.debounce(notifySwap, 0);
 
 // the atom per se
 
 atom = {
-  get: function() {
+  get() {
     return state;
   },
-  swap: function(newState) {
-    this.silentSwap(newState);
-    notifySwap(state);
-    return newState;
-  },
-  silentSwap: function(newState) {
+  silentSwap(newState) {
     state = newState;
     return newState;
   },
-  addChangeListener: function(fn) {
-    listeners.push(fn);
+  swap(newState) {
+    atom.silentSwap(newState);
+    notifySwap(state);
+    return newState;
   },
-  // extend it with some mori ops
-  getIn: function() {
-    return wrap('getIn', slice.call(arguments));
+  addChangeListener(cb) {
+    listeners.push(cb);
   },
-  assocIn: function() {
-    return atom.swap(wrap('assocIn', slice.call(arguments)));
-  },
-  updateIn: function() {
-    return atom.swap(wrap('updateIn', slice.call(arguments)));
-  },
-  silentAssocIn: function() {
-    return atom.silentSwap(wrap('assocIn', slice.call(arguments)));
-  },
-  silentUpdateIn: function() {
-    return atom.silentSwap(wrap('updateIn', slice.call(arguments)));
+  removeChangeListener(cb) {
+    listeners = fn.filter(e => x !== cb, listeners);
   }
 };
+
+atom = fn.merge(atom, {
+  // extend it with some mori ops
+  getIn: fn.compose(fn.partial(wrap, 'getIn'), getArgs),
+  // getArgs -> pack arguments list as an array
+  assocIn: fn.compose(atom.swap, fn.partial(wrap, 'assocIn'), getArgs),
+  updateIn: fn.compose(atom.swap, fn.partial(wrap, 'updateIn'), getArgs),
+  silentAssocIn: fn.compose(atom.silentSwap,
+                            fn.partial(wrap, 'assocIn'),
+                            getArgs),
+  silentUpdateIn: fn.compose(atom.silentSwap,
+                             fn.partial(wrap, 'updateIn'),
+                             getArgs)
+});
 
 module.exports = atom;

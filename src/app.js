@@ -3,7 +3,7 @@ var _ = require("mori"),
     atom = require("./lib/atom_state"),
     router = require("./routes"),
     initialState = require("./config/initial_state"),
-    RootComponent = require("./components/root"),
+    RootComponent = require("./components/root.jsx"),
     TodoStore = require("./stores/todos");
 
 

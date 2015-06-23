@@ -1,5 +1,6 @@
 var director = require('director'),
     atom = require("./lib/atom_state"),
+    todoActions = require("./config/actions"),
     _ = require('mori'),
     emit = require('./lib/dispatcher').emit;
 
@@ -38,21 +39,15 @@ function setPage(componentName) {
     if (anchor) {
       window.location.hash = anchor;
     } else {
-      $(document.body).removeClass('menu-is-shown');
-      setTimeout(_.partial(emit, 'ROUTING:SETPAGE', componentName), 0);
+      setTimeout(_.partial(emit, todoActions.SET_PAGE, componentName), 0);
     }
   };
 }
 
-function resetForm() {
-  emit('APPLICATION:RESET:FORM');
-  emit('FUNNEL:CANCEL');
-}
-
 var routes = {
   all: {path: '/', fn: setPage("all")},
-  active: {path: 'active', fn: setPage("active")},
-  completed: {path: 'completed', fn: setPage("completed")}
+  active: {path: '/active', fn: setPage("active")},
+  completed: {path: '/completed', fn: setPage("completed")}
 };
 
 function start() {
@@ -63,8 +58,6 @@ function start() {
   routerInstance = director.Router(routeTable);
   routerInstance.configure({html5history: false});
   routerInstance.init();
-  // sometimes the url get messed up (NGINX!)
-  navigateTo(window.location.hash);
 }
 
 module.exports = {routes, start, navigateTo};

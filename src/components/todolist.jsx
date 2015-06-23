@@ -3,7 +3,7 @@ var React = require("react"),
     _ = require("mori"),
     RootStore = require("../stores/root"),
     TodoStore = require("../stores/todos"),
-    TodoItem = require("./todoitem");
+    TodoItem = require("./todoitem.jsx");
 
 var TodoList = React.createClass({
   propTypes: {
