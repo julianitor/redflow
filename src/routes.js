@@ -1,5 +1,6 @@
 var director = require('director'),
     atom = require("./lib/atom_state"),
+    todoActions = require("./config/actions"),
     _ = require('mori'),
     emit = require('./lib/dispatcher').emit;
 
@@ -38,7 +39,7 @@ function setPage(componentName) {
     if (anchor) {
       window.location.hash = anchor;
     } else {
-      setTimeout(_.partial(emit, 'ROUTING:SETPAGE', componentName), 0);
+      setTimeout(_.partial(emit, todoActions.SET_PAGE, componentName), 0);
     }
   };
 }
@@ -57,8 +58,6 @@ function start() {
   routerInstance = director.Router(routeTable);
   routerInstance.configure({html5history: false});
   routerInstance.init();
-  // sometimes the url get messed up (NGINX!)
-  navigateTo(window.location.hash);
 }
 
 module.exports = {routes, start, navigateTo};
