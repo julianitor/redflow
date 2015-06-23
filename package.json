@@ -1,40 +1,31 @@
 {
   "name": "redflow",
-  "version": "1.0.0",
-  "description": "our own version of flux architecture with inmutable data",
-  "main": "index.js",
-  "keywords": [
-    "inmutable",
+    "version": "1.0.0",
+    "description": "our own version of flux architecture with inmutable data",
+    "main": "index.js",
+    "keywords": [
+      "inmutable",
     "mori",
     "react",
     "flux"
-  ],
-  "author": "redradix",
-  "license": "ISC",
-  "scripts": {
-    "jsx": "npm run mkdir_tmp && jsx ./src/ ./tmp/",
-    "bundle": "npm run mkdir_dist && webmake --sourcemap ./tmp/app.js ./dist/bundle.js",
-    "build-all": "npm run jsx && npm run bundle && npm run clean",
-    "clean": "rimraf ./tmp",
-    "server": "statik --port 3000 .",
-    "watch": "onchange 'src/**/*.js' -- npm run build-all",
-    "mkdir_tmp": "mkdirp ./tmp",
-    "mkdir_dist": "mkdirp ./dist",
-    "dev": "npm run server & npm run watch",
-    "start": "npm run build-all && npm run dev"
-  },
-  "devDependencies": {
-    "onchange": "1.1.0",
-    "statik": "^1.4.6"
-  },
-  "dependencies": {
-    "eventemitter2": "^0.4.14",
-    "mkdirp": "^0.5.0",
-    "mori": "^0.3.2",
-    "page": "^1.6.2",
-    "react": "~0.13.3",
-    "react-tools": "^0.12.2",
-    "rimraf": "^2.3.3",
-    "webmake": "^0.3.36"
-  }
+      ],
+    "author": "redradix",
+    "license": "ISC",
+    "scripts": {
+      "start": "./node_modules/.bin/webpack-dev-server --progress --colors --content-base build/ --hot",
+      "build": "./node_modules/.bin/webpack --optimize-minimize --optimize-dedupe"
+    },
+    "devDependencies": {
+      "babel-core": "^5.4.7",
+      "babel-loader": "^5.1.3",
+      "babel-runtime": "^5.4.7",
+      "webpack": "^1.7.3",
+      "webpack-dev-server": "^1.7.0"
+    },
+    "dependencies": {
+      "director": "^1.2.8",
+      "eventemitter3": "^0.1.6",
+      "mori": "^0.3.2",
+      "react": "^0.13.1"
+    }
 }

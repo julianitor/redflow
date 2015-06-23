@@ -1,8 +1,7 @@
 var _ = require("mori"),
     React = require("react"),
     atom = require("./lib/atom_state"),
-    page = require("page"),
-    routes = require("./routes"),
+    router = require("./routes"),
     initialState = require("./config/initial_state"),
     RootComponent = require("./components/root"),
     TodoStore = require("./stores/todos");
@@ -12,23 +11,13 @@ window.onload = function() {
   // initialize initial state on atom
   atom.silentSwap(_.toClj(initialState));
   /** UNCOMMENT FOR DEBUGGING **/
-  // window.atom = atom;
-  // window._ = _;
+   window.atom = atom;
+   window._ = _;
   /** REMOVE ABOVE LINES IN PRODUCTION!!! **/
 
-  // set subdomain
-  page.base(window.location.pathname);
-
-  //initialize router
-  for (var route in routes) if (routes.hasOwnProperty(route)) {
-    page.apply(null, [route].concat(routes[route]));
-  };
-  //Uncomment for hash-based navigation, otherwise HTML5 History API will be used
-
-  //page({hashbang: true});
-
   //Start routing
-  page();
+
+  router.start();
 
   React.render(<RootComponent/>, document.getElementById("todoapp"));
 

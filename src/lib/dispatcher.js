@@ -1,4 +1,4 @@
-var EventEmitter = require('eventemitter2').EventEmitter2,
+var EventEmitter = require('eventemitter3').EventEmitter3,
     atom = require("./atom_state");
 
 var dispatcher = new EventEmitter({
@@ -44,3 +44,4 @@ dispatcher.emit = dispatcher.emit.bind(dispatcher);
 // })(dispatcher.emit);
 
 module.exports = dispatcher;
+
